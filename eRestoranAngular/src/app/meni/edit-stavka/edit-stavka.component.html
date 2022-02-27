@@ -1,0 +1,101 @@
+
+<header class="py-5 bg-image-full" style="background-image: url('/assets/img/cover/nova-stavka.jpg')">
+  <div class="text-center my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Uređivanje meni stavke</h1>
+    </div>
+  </div>
+</header>
+<!-- Product section-->
+<!--*ngIf="urediStavka!=null"-->
+<section  class="py-5 bg-light" *ngIf="urediStavka!=null">
+  <div class="container px-4 px-lg-5 my-5 mt-2">
+    <div style="text-align: left">
+      <button class="btn btn-outline-dark flex-shrink-0 mb-2" type="button" routerLink="/meni">
+        <i class="bi bi-arrow-bar-left"></i>
+        Nazad
+      </button>
+    </div>
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <div class="col-md-6">
+        <img id="preview-slika" class="card-img-top mb-5 mb-md-0" alt="Prostor za fotografiju" src="{{urediStavka.slika}}"/>
+        <div  class="d-flex">
+          <input class="btn btn-outline-dark flex-shrink-0" id="fajl-input" accept="image/*" type="file" (change)="generisiPreview()"/>
+        </div>
+      </div>
+      <div  class="col-md-6">
+        <div class="small mb-1">Uredite podatke o prikazanoj meni stavci</div>
+        <h3 class="display-5 fw-bolder">Uređivanje meni stavke</h3>
+        <div class="fs-6 mb-5">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Naziv</span>
+            </div>
+           <input type="text" class="form-control" [(ngModel)]="urediStavka.naziv" required #naziv="ngModel" [placeholder]="provjeriPolje(naziv)">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Sastojci</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="urediStavka.opis" required #opis="ngModel" [placeholder]="provjeriPolje(opis)">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Cijena</span>
+            </div>
+            <input type="number" min="0.1" class="form-control" [(ngModel)]="urediStavka.cijena" required #cijena="ngModel" [placeholder]="provjeriPolje(cijena)">
+            <div class="input-group-append">
+              <span class="input-group-text">KM</span>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Cijena posebne ponude</span>
+            </div>
+            <input type="number" min="0.1" class="form-control" [(ngModel)]="urediStavka.snizenaCijena" required #snizenaCijena="ngModel" [placeholder]="provjeriPolje(snizenaCijena)">
+            <div class="input-group-append">
+              <span class="input-group-text">KM</span>
+            </div>
+          </div>
+
+          <label>Meni kategorija:</label>
+          <select class="form-control mb-3" [(ngModel)]="urediStavka.meniGrupaId" >
+            <option value=-1 disabled hidden selected>Obavezno polje za odabir</option>
+            <option *ngFor = "let grupa of meniGrupe" [value]=grupa.id>{{grupa.naziv}}</option>
+          </select>
+        </div>
+        <div class="d-flex">
+          <button class="btn btn-dark flex-shrink-0" type="button" (click)="posaljiPodatke()">
+            <i class="bi bi-archive-fill"></i>
+            Ažuriraj podatke
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

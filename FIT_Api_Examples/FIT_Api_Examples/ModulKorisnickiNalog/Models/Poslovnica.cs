@@ -1,0 +1,23 @@
+﻿using FIT_Api_Examples.ModulKorisnik.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace FIT_Api_Examples.ModulKorisnickiNalog.Models
+{
+    public class Poslovnica
+    {
+        public int ID { get; set; }
+        public string Adresa { get; set; }
+        public string BrojTelefona { get; set; }
+        public string RadnoVrijemeRedovno { get; set; }
+        public string RadnoVrijemeVikend { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
+        [ForeignKey("OpstinaID")]
+        public int OpstinaID { get; set; }
+        public Opstina Opstina { get; set; }
+    }
+}

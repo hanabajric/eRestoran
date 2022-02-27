@@ -1,0 +1,151 @@
+<!-- Navigation-->
+<nav class="mainNav navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <a class="navbar-brand">eRestoran</a>
+    <button style="color:white" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars ms-1"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item"><a class="nav-link" routerLink="home-page" (click)="clicked('Home')" [ngClass]="this.trenutnaSelekcija == 'Home' ? 'fw-bold active' : ''">Početna</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="meni" (click)="clicked('Meni')" [ngClass]="this.trenutnaSelekcija == 'Meni' ? 'fw-bold active' : ''">Meni</a></li>
+        <li *ngIf="loginInformacije.isLogiran" class="nav-item"><a class="nav-link" routerLink="posebna-ponuda" (click)="clicked('PP')" [ngClass]="this.trenutnaSelekcija == 'PP' ? 'fw-bold active' : ''">Izdvojeno</a></li>
+        <li *ngIf="loginInformacije.isPermisijaZaposlenik" class="nav-item"><a class="nav-link" routerLink="pregled-narudzbi" (click)="clicked('Narudzbe')" [ngClass]="this.trenutnaSelekcija == 'Narudzbe' ? 'fw-bold active' : ''">Narudžbe</a></li>
+        <li *ngIf="loginInformacije.isPermisijaZaposlenik" class="nav-item"><a class="nav-link" routerLink="pregled-rezervacija-zaposlenik" (click)="clicked('Rezervacije')" [ngClass]="this.trenutnaSelekcija == 'Rezervacije' ? 'fw-bold active' : ''">Rezervacije</a></li>
+        <li *ngIf="loginInformacije.isPermisijaDostavljac" class="nav-item"><a class="nav-link" routerLink="pregled-narudzbi-dostavljac" (click)="clicked('Narudzbe')" [ngClass]="this.trenutnaSelekcija == 'Narudzbe' ? 'fw-bold active' : ''">Narudžbe</a></li>
+        <li *ngIf="loginInformacije.isPermisijaGost" class="nav-item"><a class="nav-link" routerLink="home-page" [fragment]="'portfolio'" (click)="clicked('Home')">Izdvojeno</a></li>
+        <li *ngIf="loginInformacije.isPermisijaKorisnik" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownRezervacija" role="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="this.trenutnaSelekcija == 'Rezervacija' ? 'fw-bold active' : ''">Rezervacija</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownRezervacija">
+            <li><a class="dropdown-item" href="#" routerLink="rezervacija" (click)="clicked('Rezervacija')">
+              <i class="bi bi-plus-circle-fill"></i>
+              Nova rezervacija</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#" routerLink="pregled-rezervacija" (click)="clicked('Rezervacija')">
+              <i class="bi bi-clock-history"></i>
+              Moje rezervacije</a></li>
+          </ul>
+        </li>
+
+
+        <li *ngIf="loginInformacije.isPermisijaAdministrator" class="nav-item"><a class="nav-link" routerLink="kupon" (click)="clicked('Kuponi')" [ngClass]="this.trenutnaSelekcija == 'Kuponi' ? 'fw-bold active' : ''">Kuponi</a></li>
+        <li *ngIf="loginInformacije.isPermisijaAdministrator" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="this.trenutnaSelekcija == 'Osoblje' ? 'fw-bold active' : ''">Osoblje</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+            <li><a class="dropdown-item" href="#" routerLink="zaposlenik" (click)="clicked('Osoblje')">Zaposlenici</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#" routerLink="dostavljac" (click)="clicked('Osoblje')">Dostavljači</a></li>
+          </ul>
+        </li>
+        <li *ngIf="loginInformacije.isPermisijaAdministrator" class="nav-item"><a class="nav-link" routerLink="poslovnica" (click)="clicked('NP')" [ngClass]="this.trenutnaSelekcija == 'NP' ? 'fw-bold active' : ''">Nova poslovnica</a></li>
+        <li *ngIf="loginInformacije.isPermisijaKorisnik" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="this.trenutnaSelekcija == 'Omiljeno' ? 'fw-bold active' : ''">Omiljeno</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" routerLink="omiljene-stavke" (click)="clicked('Omiljeno')">
+              <i class="bi bi-bookmark-heart-fill"></i>
+              Najdraže stavke</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#" routerLink="omiljene-narudzbe" (click)="clicked('Omiljeno')">
+              <i class="bi bi-emoji-heart-eyes-fill"></i>
+              Najdraže narudžbe</a></li>
+          </ul>
+        </li>
+        <li *ngIf="!loginInformacije.isPermisijaZaposlenik && !loginInformacije.isPermisijaDostavljac" class="nav-item"><a class="nav-link" (click)="preusmjeri(); clicked('Home');">Kontakt</a></li>
+      </ul>
+      <ul *ngIf="loginInformacije.isLogiran" class="navbar-nav d-flex">
+        <li *ngIf="loginInformacije.isPermisijaKorisnik" class="nav-item">
+          <div class="dropdown">
+            <button class=" btn btn-outline-light" role="button" id="dropdownMenuKuponi" data-bs-toggle="dropdown" aria-expanded="false" (click)="preuzmiKupone()">
+              <i class="bi bi-bell-fill"></i>
+              <span class="badge bg-light text-black ms-1 rounded-pill" id="notifikacije">0</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuKuponi">
+              <a class="dropdown-item" *ngIf="kuponi == null || kuponi.length == 0">
+                Trenutno nemate dostupnih kupona
+              </a>
+              <a class="dropdown-item" *ngFor="let kupon of kuponi">
+                Imate kupon sa {{kupon.popust}} % popusta | {{kupon.kod}}
+              </a>
+            </div>
+          </div>
+        </li>
+        <li *ngIf="loginInformacije.isPermisijaKorisnik" class="nav-item btn btn-outline-light" routerLink="narudzba" (click)="clicked('Home')">
+          <i class="bi-cart-fill me-1"></i>
+          Korpa
+          <span class="badge bg-light text-black ms-1 rounded-pill" id="kolicina">0</span>
+        </li>
+        <li class="nav-item">
+        <div class="dropdown">
+          <button class=" btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-lines-fill"></i>
+            Moj profil
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngIf="loginInformacije.isPermisijaKorisnik" class="dropdown-item" href="" routerLink="moje-narudzbe" (click)="clicked('Home')">
+              <i class="bi bi-basket-fill"></i>
+              Moje narudžbe
+            </a>
+            <a class="dropdown-item" href="" routerLink="moji-podaci" (click)="clicked('Home')">
+              <i class="bi bi-gear-fill"></i>
+              Postavke profila
+            </a>
+            <a class="dropdown-item" href="" (click)="odjava()">
+              <i class="bi bi-door-closed-fill"></i>
+              Odjavi se
+            </a>
+          </div>
+        </div>
+        </li>
+      </ul>
+      <ul *ngIf="loginInformacije.isPermisijaGost" class="navbar-nav d-flex">
+        <li class="nav-item btn btn-outline-light" routerLink="login">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Prijava
+        </li>
+        <li class="nav-item btn btn-outline-light" routerLink="registracija">
+          <i class="bi bi-person-plus-fill"></i>
+          Registracija
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+<!-- Footer-->
+<footer class="footer py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-4 text-lg-start"></div>
+      <div class="col-lg-4 my-3 my-lg-0">
+        Copyright &copy; eRestoran 2021
+      </div>
+      <div class="col-lg-4 text-lg-end">
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div *ngIf="signalRService.podaci != null" class="portfolio-modal modal" [ngClass]="animirajNotifikaciju()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">Osvojili ste novi kupon</p>
+              <div class="text-center">
+                <div class="mb-2"><b>Naš restoran Vam poklanja kupon {{signalRService.podaci.kod}} sa {{signalRService.podaci.popust}}% popusta!</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModal()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

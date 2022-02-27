@@ -1,0 +1,71 @@
+<header class="masthead-kupon" style="padding-top: 11rem;">
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-center mb-4">
+      <div class="animate__animated animate__fadeIn col col-xl-6">
+        <div class="card mb-5" style="border: none">
+          <div class="row g-0">
+            <div class="col d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <form>
+
+                  <div class="small mb-1 text-center">Unesite podatke o novom kuponu</div>
+                  <h3 class="display-5 fw-bolder text-center mb-5">Popusni kupon</h3>
+                  <div class="fs-6 mb-5">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Iznos</span>
+                      </div>
+                      <input type="number" min="5" max="95" step="5" class="form-control" [(ngModel)]="popusniKupon.popust" [ngModelOptions]="{standalone: true}" required #iznos="ngModel" [placeholder]="provjeriPolje(iznos)">
+                      <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                      </div>
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Broj korisnika</span>
+                      </div>
+                      <input type="number" min="1" class="form-control" [(ngModel)]="popusniKupon.maksimalniBrojKorisnika" [ngModelOptions]="{standalone: true}" required #brojKorisnika="ngModel" [placeholder]="provjeriPolje(brojKorisnika)">
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button class="btn btn-dark flex-shrink-0" type="button" (click)="posaljiPodatke()">
+                      <i class="bi bi-receipt"></i>
+                      Generiši kupon
+                    </button>
+                  </div>
+
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

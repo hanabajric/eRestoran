@@ -1,0 +1,195 @@
+<!-- Header-->
+<header class="py-5 bg-image-full" style="background-image: url('/assets/img/cover/meni.jpg')">
+  <div class="text-center my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Naš ukusni meni</h1>
+      <p class="lead fw-normal text-white mb-0">Probajte naše najbolje specijalitete</p>
+    </div>
+  </div>
+</header>
+<section class="page-section bg-light py-5">
+  <div *ngIf="loginInformacije.isPermisijaAdministrator" style="text-align: center">
+    <button class="btn btn-outline-dark flex-shrink-0 mb-2" type="button" routerLink="/nova-stavka">
+      <i class="bi bi-plus-circle-fill"></i>
+      Dodaj novu stavku menija
+    </button>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <ul class="nav site-tab-nav">
+        <li *ngFor ="let grupa of meniGrupe" class="nav-item">
+          <a *ngIf="!loginInformacije.isPermisijaKorisnik" class="nav-link" (click)="ucitajMeniStavke(grupa.naziv)" [ngClass]="this.trenutnaKategorija == grupa.naziv ? 'active' : ''">{{grupa.naziv}}</a>
+          <a *ngIf="loginInformacije.isPermisijaKorisnik" class="nav-link" (click)="ucitajMeniStavkeKorisnik(grupa.naziv)" [ngClass]="this.trenutnaKategorija == grupa.naziv ? 'active' : ''">{{grupa.naziv}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div    class="container px-4 px-lg-5 mt-5">
+    <div *ngIf="!loginInformacije.isPermisijaKorisnik" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div *ngFor="let stavka of meniStavke" class="animate__animated animate__fadeIn col mb-5">
+        <div  class="card h-100">
+          <!-- Sale badge-->
+          <div *ngIf="stavka.izdvojeno==true" class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Izdvojeno</div>
+          <!-- Product image-->
+          <img class="card-img-top" src="{{stavka.slika}}" alt="Nije učitana slika" />
+          <!-- Product details-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- Product name-->
+              <h5 class="fw-bolder">{{stavka.naziv}}</h5>
+              <span class="text-muted">{{stavka.opis}}</span>
+              <!-- Product reviews-->
+              <div class="d-flex justify-content-center small text-warning mb-2">
+                <div *ngFor = "let item of createRange(stavka.ocjena)" class="bi-star-fill" ></div>
+
+              </div>
+              <!-- Product price-->
+              <span *ngIf="stavka.izdvojeno==true" class="text-muted text-decoration-line-through">{{stavka.cijena}} KM </span>
+              <span *ngIf="stavka.izdvojeno">{{stavka.snizenaCijena}} KM</span>
+              <span *ngIf="!stavka.izdvojeno">{{stavka.cijena}} KM</span>
+            </div>
+          </div>
+          <!-- Product actions-->
+          <div *ngIf="loginInformacije.isPermisijaAdministrator" class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <a *ngIf = "stavka.izdvojeno==false" class="btn btn-outline-dark mt-auto mx-1" (click)="izdvoji(stavka)">Izdvoji</a>
+            </div>
+            <i class="bi bi-pencil-square" (click)="detalji(stavka.id)" style="margin-left: 10px"> </i>
+            <i class="bi bi-trash" (click)="prikazi_brisanje(stavka)" style="margin-left: 10px"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loginInformacije.isPermisijaKorisnik" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div *ngFor="let stavka of meniStavkeKorisnik" class="animate__animated animate__fadeIn col mb-5">
+        <div  class="card h-100">
+          <!-- Sale badge-->
+          <div *ngIf="stavka.izdvojeno==true" class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Izdvojeno</div>
+          <!-- Product image-->
+          <img class="card-img-top" src="{{stavka.slika}}" alt="Nije učitana slika" />
+          <!-- Product details-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- Product name-->
+              <h5 class="fw-bolder">{{stavka.naziv}}</h5>
+              <span class="text-muted">{{stavka.opis}}</span>
+              <!-- Product reviews-->
+              <div class="d-flex justify-content-center small text-warning mb-2">
+                <div *ngFor = "let item of createRange(stavka.ocjena)" class="bi-star-fill" ></div>
+
+              </div>
+              <!--zvjezdice-->
+              <!--<div class="App" >
+
+                <div (mouseenter)="prikaziOcjenjivanje(stavka)" class="flex-container">
+
+                  <ng-container  *ngFor="let star of stars">
+                    <app-star [odabranaId]="stavka.id" [odabrana]="ocijenjenaStavkaMenija" [starId]="star" [rating]="hoverState || rating" (enter)="enter($event)" (leave)="leave($event)"
+                              (bigClick)="updateRating(star)">
+                    </app-star>
+                  </ng-container>
+
+                </div>
+              </div>-->
+              <!-- Product price-->
+              <span *ngIf="stavka.izdvojeno" class="text-muted text-decoration-line-through">{{stavka.cijena}} KM</span>
+              <span *ngIf="stavka.izdvojeno"> {{stavka.snizenaCijena}} KM</span>
+              <span *ngIf="!stavka.izdvojeno">{{stavka.cijena}} KM</span>
+            </div>
+          </div>
+          <!-- Product actions-->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="dodajUKorpu(stavka)">
+              <i class="bi bi-cart-plus-fill"></i>
+              Dodaj u korpu</a>
+            </div>
+            <!--<i class="omiljeno bi bi-heart-fill" [ngClass]="stavka.omiljeno ? 'crveno' : 'crno'" (click)="upravljajOmiljenomStavkom(stavka)"></i>-->
+
+<!--proba - zvjezdice-->
+
+
+            <div class="dropdown">
+              <i class="omiljeno bi bi-heart-fill" [ngClass]="stavka.omiljeno ? 'crveno' : 'crno'" (click)="upravljajOmiljenomStavkom(stavka)"></i>
+              <span style="text-decoration:none" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+               <!-- <i class="bi bi-three-dots"  >   </i>-->
+                Ocijeni
+
+              </span>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="App" >
+
+                  <div (mouseenter)="prikaziOcjenjivanje(stavka)" class="flex-container">
+
+                    <ng-container  *ngFor="let star of stars">
+                      <app-star [odabranaId]="stavka.id" [odabrana]="ocijenjenaStavkaMenija" [starId]="star" [rating]="hoverState || rating" (enter)="enter($event)" (leave)="leave($event)"
+                                (bigClick)="updateRating(star)">
+                      </app-star>
+                    </ng-container>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal za brisanje stavke menija-->
+<div *ngIf="odabranaStavkaMenija != null" [ngClass]="animirajObavjestenje()" class="portfolio-modal modal" id="portfolioModal" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" aria-label="Close" (click)="zatvoriModal()"></button>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <!-- Project details-->
+              <h3 class="text-uppercase">{{odabranaStavkaMenija.naziv}}</h3>
+              <p class="item-intro text-muted"></p>
+
+              <p>{{odabranaStavkaMenija.opis}}</p>
+              <p style="font-size: larger ">Da li ste sigurni da želite obrisati odabranu stavku menija?</p>
+              <button class="btn btn-danger  text-uppercase" (click)="brisanje(odabranaStavkaMenija)">
+                <i class="bi bi-trash"></i>
+                Obriši
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

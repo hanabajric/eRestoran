@@ -1,0 +1,106 @@
+<!-- Header-->
+<header class="py-5 bg-image-full" style="background-image: url('/assets/img/cover/zaposlenici.jpg')">
+  <div class="text-center my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Dostavljači</h1>
+      <p class="lead fw-normal text-white mb-0">Upravljanje dostavljačima</p>
+    </div>
+  </div>
+</header>
+<section class="page-section bg-light py-5">
+  <div  style="text-align: center">
+    <button class="btn btn-outline-dark flex-shrink-0 mb-2" type="button" routerLink="/novi-dostavljac">
+      <i class="bi bi-plus-circle-fill"></i>
+      Dodaj novog dostavljača
+    </button>
+  </div>
+  <div *ngIf ="dostavljaci == null || dostavljaci?.length == 0" class="py-5 my-5">
+    <h3 class="animate__animated animate__bounceIn display-7 fw-bolder text-center text-black">
+      Trenutno nemate dostavljače</h3>
+
+  </div>
+
+  <div    class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div  *ngFor="let dostavljac of dostavljaci"class="animate__animated animate__fadeIn col mb-5"><!--*ngFor="let stavka of meniStavke"-->
+        <div  class="card h-100">
+
+          <!-- Product image-->
+          <img class="card-img-top" src="/assets/img/cover/meni.jpg" src="{{dostavljac.slika}}" alt="Nije učitana slika" /><!--src="{{}}"-->
+          <!-- Product details-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- Product name-->
+              <h6 style="font-size: larger"class="fw-bolder">{{dostavljac.ime}}</h6>
+              <h6 style="font-size: larger" class="fw-bolder">{{dostavljac.prezime}}</h6>
+              <p class="text-muted">{{dostavljac.email}}</p>
+              <p class="text-muted">Korisnicko ime: {{dostavljac.korisnickoIme}}</p>
+              <p class="text-muted">Broj obavljenih narudžbi: {{dostavljac.dostavljeneNarudzbe}}</p>
+
+
+
+              <i  class="bi bi-pencil-square"  style="margin-left: 10px" (click)="posaljiPodatke(dostavljac.id) " > </i>
+              <i  class="bi bi-trash"  style="margin-left: 10px" (click)="prikazi_brisanje(dostavljac)"></i>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Modal za brisanje zaposlenika-->
+<div *ngIf="odabraniDostavljac != null " class="animate__animated animate__fadeIn portfolio-modal modal" id="portfolioModal" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" aria-label="Close" (click)="odabraniDostavljac = null"></button>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <!-- Project details-->
+              <h3 class="text-uppercase">{{odabraniDostavljac.ime}} {{odabraniDostavljac.prezime}}</h3>
+              <p class="item-intro text-muted"></p>
+
+              <p>{{odabraniDostavljac.korisnickoIme}}</p>
+              <p style="font-size: larger ">Da li ste sigurni da želite obrisati odabranog dostavljača?</p>
+              <button class="btn btn-danger  text-uppercase" (click)="obrisi(odabraniDostavljac)">
+                <i class="bi bi-trash"></i>
+                Obriši
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--modal za obavještenje-->
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()" >
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

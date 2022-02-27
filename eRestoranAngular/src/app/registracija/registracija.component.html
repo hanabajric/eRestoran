@@ -1,0 +1,117 @@
+<header class="masthead" style="padding-top: 8rem;">
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="animate__animated animate__fadeIn col col-xl-6">
+        <div class="card" style="border: none">
+          <div class="row g-0">
+            <div class="col d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <form>
+
+                  <h3 class="display-6 fw-bolder">Napravite profil</h3>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Ime</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="registracija.ime" [ngModelOptions]="{standalone: true}"  required #ime="ngModel" [placeholder]="provjeriPolje(ime)">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Prezime</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="registracija.prezime" [ngModelOptions]="{standalone: true}"  required #prezime="ngModel" [placeholder]="provjeriPolje(prezime)">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Email</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="registracija.email" [ngModelOptions]="{standalone: true}"  required #email="ngModel" [placeholder]="provjeriPolje(email)">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Broj telefona</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="registracija.brojTelefona" [ngModelOptions]="{standalone: true}"  required #brojTelefona="ngModel" [placeholder]="provjeriPolje(brojTelefona)">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Adresa stanovanja</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="registracija.adresaStanovanja" [ngModelOptions]="{standalone: true}" required #adresaStanovanja="ngModel" [placeholder]="provjeriPolje(adresaStanovanja)">
+                  </div>
+                 <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Korisničko ime</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Korisnicko ime" [(ngModel)]="registracija.username" [ngModelOptions]="{standalone: true}"  required #username="ngModel" [placeholder]="provjeriPolje(username)">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Lozinka</span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Lozinka"[(ngModel)]="registracija.password" [ngModelOptions]="{standalone: true}"  required #password="ngModel" [placeholder]="provjeriPolje(password)">
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Ponovite lozinku</span>
+                    </div>
+                    <input type="password" class="form-control"  [(ngModel)]="sifra" [ngModelOptions]="{standalone: true}"  required #password2="ngModel" [placeholder]="provjeriPolje(password2)">
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Opstina</span>
+                    </div>
+                    <select class="form-control mb-3" [(ngModel)]="registracija.opstinaId"  [ngModelOptions]="{standalone: true}"  >
+                      <option *ngFor = "let opstina of opstine" [value]=opstina.id>{{opstina.naziv}}</option>
+                    </select>
+                  </div>
+
+
+                  <!-- <div class="input-group">
+                     <div class="form-check form-switch">
+                       <input [(ngModel)]="zapamtiMe" class="form-check-input" type="checkbox" name="RememberMe" id="RememberMe">
+                       <label class="form-check-label" for="RememberMe">Zapamti me?</label>
+                     </div>
+                   </div>-->
+                  <button class="btn btn-dark flex-shrink-0" (click)="registracijaPodataka()"> <i class="bi bi-person-plus-fill"></i> Registruj se</button>
+                 <!--<button class="btn btn-dark flex-shrink-0" (click)="posaljiPodatke()">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Prijavi se
+                  </button>-->
+
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()">
+                  <i class="bi bi-check-circle-fill" ></i>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

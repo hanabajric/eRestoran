@@ -1,0 +1,121 @@
+<header class="masthead-kupon" style="background-image: url('/assets/img/moji-podaci.jpg')" [style]="loginInformacije.isPermisijaAdministrator? 'padding-top:10rem; padding-bottom:10rem;': 'padding-top: 6rem'">
+  <div class="container">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="animate__animated animate__pulse col" [ngClass]="podesiSirinuCarda()">
+          <div class="card" style="border: none; border-radius: 0.1rem;">
+            <div class="row g-0">
+              <div class="col d-flex align-items-center">
+                <div *ngIf="loginInformacije.isPermisijaZaposlenik || loginInformacije.isPermisijaDostavljac" class="col-md-6">
+                  <img id="preview-slika" class="card-img-top mb-5 mb-md-0" alt="Prostor za fotografiju" src="{{korisnik.slika}}"/>
+                  <div  class="d-flex justify-content-center align-items-center position-absolute" style="bottom:10px; left:20px;">
+                    <input class="btn btn-outline-dark flex-shrink-0" id="fajl-input" accept="image/*" type="file" (change)="generisiPreview()"/>
+                  </div>
+                </div>
+                <div class="card-body p-4 p-lg-5 text-black">
+                  <form>
+
+                    <h3 class="display-6 fw-bolder">Moji podaci</h3>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Ime</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="korisnik.ime" [ngModelOptions]="{standalone: true}" required #ime="ngModel" [placeholder]="provjeriPolje(ime)">
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Prezime</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="korisnik.prezime" [ngModelOptions]="{standalone: true}" required #prezime="ngModel" [placeholder]="provjeriPolje(prezime)">
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Email</span>
+                      </div>
+                      <input type="email" class="form-control" [(ngModel)]="korisnik.email" [ngModelOptions]="{standalone: true}" required #email="ngModel" [placeholder]="provjeriPolje(email)">
+                    </div>
+                    <div *ngIf="loginInformacije.isPermisijaKorisnik" class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Broj telefona</span>
+                      </div>
+                      <input type="tel" class="form-control" [(ngModel)]="korisnik.brojTelefona" [ngModelOptions]="{standalone: true}" required #brojTelefona="ngModel" [placeholder]="provjeriPolje(brojTelefona)">
+                    </div>
+                    <div *ngIf="loginInformacije.isPermisijaKorisnik" class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Adresa stanovanja</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="korisnik.adresaStanovanja" [ngModelOptions]="{standalone: true}" required #adresa="ngModel" [placeholder]="provjeriPolje(adresa)">
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Korisničko ime</span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Korisnicko ime" [(ngModel)]="korisnik.korisnickoIme" [ngModelOptions]="{standalone: true}" required #korisnickoIme="ngModel" [placeholder]="provjeriPolje(korisnickoIme)">
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Lozinka</span>
+                      </div>
+                      <input [type]="fieldText ? 'text' : 'password'" class="form-control" placeholder="Lozinka" [(ngModel)]="korisnik.lozinka" [ngModelOptions]="{standalone: true}" required #lozinka="ngModel" [placeholder]="provjeriPolje(lozinka)">
+
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i class="bi" [ngClass]="{'bi-eye-slash-fill': !fieldText,'bi-eye-fill': fieldText}" (click)="prikaziSakrij()"></i>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="loginInformacije.isPermisijaKorisnik" class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Opstina</span>
+                      </div>
+                      <select class="form-control mb-3" [(ngModel)]="korisnik.opstinaId"  [ngModelOptions]="{standalone: true}">
+                        <option *ngFor = "let opstina of opstine" [value]=opstina.id>{{opstina.naziv}}</option>
+                      </select>
+                    </div>
+                    <button *ngIf="loginInformacije.isPermisijaKorisnik" class="btn btn-outline-dark flex-shrink-0 mx-2" (click)="otvoriModal()"> <i class="bi bi-shield-fill-x"></i> Obriši profil</button>
+                    <button *ngIf="loginInformacije.isPermisijaKorisnik" class="btn btn-dark flex-shrink-0" (click)="azurirajPodatkeKorisnik()"> <i class="bi bi-archive-fill"></i> Ažuriraj podatke</button>
+                    <button *ngIf="loginInformacije.isPermisijaZaposlenik" class="btn btn-dark flex-shrink-0" (click)="azurirajPodatkeZaposlenik()"> <i class="bi bi-archive-fill"></i> Ažuriraj podatke</button>
+                    <button *ngIf="loginInformacije.isPermisijaDostavljac" class="btn btn-dark flex-shrink-0" (click)="azurirajPodatkeDostavljac()"> <i class="bi bi-archive-fill"></i> Ažuriraj podatke</button>
+                    <button *ngIf="loginInformacije.isPermisijaAdministrator" class="btn btn-dark flex-shrink-0" (click)="azurirajPodatkeAdmin()"> <i class="bi bi-archive-fill"></i> Ažuriraj podatke</button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</header>
+
+<div *ngIf="obavjestenje" class="portfolio-modal modal" [ngClass]="animirajObavjestenje()" id="portfolioModalResponse" tabindex="-1" aria-labelledby="portfolioModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog mt-2">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="modal-body">
+              <p class="item-intro text-muted mb-2">{{obavjestenjeNaslov}}</p>
+              <div class="text-center">
+                <div class="mb-2"><b>{{obavjestenjeSadrzaj}}</b></div>
+
+                <button *ngIf="!obrisiProfilObavjestenje" class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Ok
+                </button>
+                <button *ngIf="obrisiProfilObavjestenje" class="btn btn-outline-dark mx-2" (click)="obrisiProfil()">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Da
+                </button>
+                <button *ngIf="obrisiProfilObavjestenje" class="btn btn-outline-dark" (click)="zatvoriModalObavjestenje();">
+                  <i class="bi bi-x-circle-fill"></i>
+                  Ne
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
